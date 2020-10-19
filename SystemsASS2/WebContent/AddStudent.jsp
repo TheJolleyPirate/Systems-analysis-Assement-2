@@ -8,14 +8,15 @@
 </head>
 <body>
 <form action = "AddStudentToDatabase" >
-First name:
-	<input type = "text"  name = "fname" value = "Daniel"> <br>
+First name (Required):
+	<input type = "text"  name = "fname"> <br>
 Last name:
-	<input type = "text" name = "lname" value = "Jolley-Rogers"> <br>
-DOB:
-	<input type = "date" name = "DOB"> <br>
+	<input type = "text" name = "lname"> <br>
+DOB (dd/mm/yyyy):
+	<input type = "text" name = "DOB"> <br>
+Class (Required):
+	<input type = "text" name = "class"> <br>
 	<input type = "submit" value = "add">
-
 </form>
 <form action = "index.jsp" >
 	<input type = "submit" value = "Back">

@@ -2,7 +2,11 @@ package pages;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,26 +32,36 @@ public class AttendanceDatabaseIn extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		ArrayList<String> names = new ArrayList<String>();
-		names.add("John");
-		names.add("Paul");
-		names.add("Ringo");
-		names.add("George");
-		PrintWriter out = response.getWriter();
-		for (int i = 0; i < names.size(); i ++) {
-			out.print(names.get(i));
-			try {
-				if(request.getParameter(names.get(i)).equals("on")) {
-					out.print(": present");
+		try {
+			Statement stat = CreateDatabase.connect();
+			ResultSet rs = null;
+			@SuppressWarnings("unchecked")
+			ArrayList<String> names = new ArrayList<String>((Collection<? extends String>) request.getParameterNames());
+			ArrayList<String> fnames = new ArrayList<String>();
+			ArrayList<String> lnames = new ArrayList<String>();
+			for(int i = 0; i < names.size(); i ++) {
+				String[] temp = names.get(i).split("\\.");
+				lnames.add(temp[0]);
+				fnames.add(temp[1]);
+				response.getWriter().print(temp[1] + " " + temp[2]);
+			}
+			Long date = (new SimpleDateFormat("ddMMyyyy").parse(request.getParameter("adate").replaceAll("/", "")).getTime()) / 1000;
+			for (int i = 0; i < names.size(); i ++) {
+				rs = stat.executeQuery("SELECT StudentID FROM Student_Details WHERE FirstName = '" + fnames.get(i) + "' AND LastName = '" + lnames.get(i) + "' AND Class = '" + request.getParameter("class2") + "';");
+				int StudentID = rs.getInt(1);
+				try {
+					if(request.getParameter(names.get(i)).equals("on")) {
+						stat.execute("INSERT INTO Attendance_Record (StudentID, Date, Attendance) VALUES (" + StudentID + ", " + date + ", " + 1 + ");");
+					}
 				}
-				else {
-					throw new Exception();
+				catch(Exception e) {
+					stat.execute("INSERT INTO Attendance_Record (StudentID, Date, Attendance) VALUES (" + StudentID + ", " + date + ", " + 0 + ");");
 				}
 			}
-			catch(Exception e) {
-				out.print(": absent");
-			}
-			out.print("<br>");
+			request.getRequestDispatcher("PreAttendance.jsp").forward(request, response);
+		}
+		catch(Exception e) {
+			
 		}
 	}
 

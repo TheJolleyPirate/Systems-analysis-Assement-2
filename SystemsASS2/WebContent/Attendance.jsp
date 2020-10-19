@@ -9,10 +9,13 @@
 </head>
 <body>
 <form action = "AttendanceDatabaseIn">
+Date (dd/mm/yyyy):
+	<input type = "text" id = "Adate" name = "Adate"> <br>
 	<c:forEach items="${names}" var="name">
 		<c:out value= "${name}"></c:out>
 		<input type = "checkbox" id = "${name}" name = "${name}"> <br>
 	</c:forEach>
+	<input id = "class2" name = "class2" value = "${class2}">
 	<input type = "submit" value = "submit">
 </form>
 <form action = "index.jsp" >

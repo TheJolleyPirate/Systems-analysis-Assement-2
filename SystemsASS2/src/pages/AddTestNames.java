@@ -1,12 +1,8 @@
 package pages;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,15 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class AttendanceDatabase
+ * Servlet implementation class AddTestNames
  */
-public class AttendanceDatabase extends HttpServlet {
+public class AddTestNames extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AttendanceDatabase() {
+    public AddTestNames() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,26 +27,13 @@ public class AttendanceDatabase extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Statement stat = CreateDatabase.connect();
-		ResultSet rs = null;
-		String classe = request.getParameter("class");
-		try {
-			rs = stat.executeQuery("SELECT FirstName, LastName FROM Student_Details WHERE Class = '" + classe + "'");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		List<String> names = new ArrayList<String>();
-		try {
-			while(rs.next()) {
-				names.add(rs.getString("LastName") + "." + rs.getString("FirstName"));
-			}
-			names = names.stream().sorted().collect(Collectors.toList());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		names.add("John");
+		names.add("Paul");
+		names.add("Ringo");
+		names.add("George");
 		request.setAttribute("names", names);
-		request.setAttribute("class2", classe);
-		request.getRequestDispatcher("Attendance.jsp").forward(request, response);
+		request.getRequestDispatcher("AddTest.jsp").forward(request, response);
 	}
 
 	/**

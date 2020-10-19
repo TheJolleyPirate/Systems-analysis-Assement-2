@@ -59,4 +59,34 @@
     <servlet-name>AttendanceDatabaseIn</servlet-name>
     <url-pattern>/AttendanceDatabaseIn</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AddTestNames</display-name>
+    <servlet-name>AddTestNames</servlet-name>
+    <servlet-class>pages.AddTestNames</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddTestNames</servlet-name>
+    <url-pattern>/AddTestNames</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AddTestDatabase</display-name>
+    <servlet-name>AddTestDatabase</servlet-name>
+    <servlet-class>pages.AddTestDatabase</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddTestDatabase</servlet-name>
+    <url-pattern>/AddTestDatabase</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CheckAttendanceDatabase</display-name>
+    <servlet-name>CheckAttendanceDatabase</servlet-name>
+    <servlet-class>pages.CheckAttendanceDatabase</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CheckAttendanceDatabase</servlet-name>
+    <url-pattern>/CheckAttendanceDatabase</url-pattern>
+  </servlet-mapping>
 </web-app>

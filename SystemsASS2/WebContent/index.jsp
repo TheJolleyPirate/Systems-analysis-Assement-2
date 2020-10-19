@@ -14,8 +14,14 @@
 <form action = "SearchStudent.jsp" >
 	<input type = "submit" value = "Search Students">
 </form>
-<form action="AttendanceDatabase">
+<form action="PreAttendance.jsp">
 	<input type = "submit" value = "Mark Attendace">
+</form>
+<form action="CheckAttendance.jsp">
+	<input type = "submit" value = "Check Attendace">
+</form>
+<form action = "AddTestNames">
+	<input type = "submit" value = "record test results">
 </form>
 </body>
 </html>
