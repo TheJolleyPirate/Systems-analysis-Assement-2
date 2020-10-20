@@ -5,4 +5,4 @@ then download jstl-1.2.jar and put it into the lib folder of tomcat
 download the web app
 put the webapp in the webapps folder in the tomcat folder
 start tomcat
-navigate to http://localhost:8080/SystemASS2/ in your browser (changinge 8080 to whatever port you are using)
+navigate to http://localhost:8080/SystemASS2/ in your browser
