@@ -55,7 +55,9 @@ public class AddStudentToDatabase extends HttpServlet {
 			while(rs.next()) {
 				stat.execute("INSERT INTO Test_Record (StudentID, TestID) VALUES (" + StudentID + ", '" + rs.getString(1) + "');");
 			}
-			response.getWriter().print("Student ID: " + StudentID + "<br> <form action = \"AddStudent.jsp\"> <input type = \"submit\" value = \"Back\"> </form>");
+			String back = ("Student ID: " + StudentID + "<br> <form action = \"AddStudent.jsp\"> <input type = \"submit\" value = \"Back\"> </form>");
+			request.setAttribute("back", back);
+			request.getRequestDispatcher("Addstudentback.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

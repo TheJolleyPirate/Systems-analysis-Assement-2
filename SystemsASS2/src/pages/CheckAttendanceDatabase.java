@@ -35,6 +35,7 @@ public class CheckAttendanceDatabase extends HttpServlet {
 		try {
 			Connection conn = CreateDatabase.connect();
 			Statement stat = conn.createStatement();
+			Statement stat2 = conn.createStatement();
 			Long date = (new SimpleDateFormat("ddMMyyyy").parse(request.getParameter("date").replaceAll("/", "")).getTime()) / 1000;
 			ResultSet rs = stat.executeQuery("SELECT StudentID, Attendance FROM Attendance_Record WHERE Date = " + date + ";");
 			int StudentID;
@@ -47,11 +48,10 @@ public class CheckAttendanceDatabase extends HttpServlet {
 				if (rs.getInt(2) == 1) {
 					Attendance = true;
 				}
-				ResultSet rs2 = stat.executeQuery("Select LastName, FirstName, Class FROM Student_Details WHERE StudentID = '" + StudentID + "';");
+				ResultSet rs2 = stat2.executeQuery("Select LastName, FirstName, Class FROM Student_Details WHERE StudentID = '" + StudentID + "';");
 				name = rs2.getString(1) + " " + rs2.getString(2);
-				Class = rs.getString(3);
 				rs2.close();
-				String tempString = name + "?<tr> <td> " + StudentID + "</td> <td> " + name + " </td> <td> " + Attendance + " </td> <td> " + Class + " </td> </tr>";
+				String tempString = name + "?<tr> <td> " + StudentID + "</td> <td> " + name + " </td> <td> " + Attendance + " </td> </tr>";
 				rows.add(tempString);
 			}
 			rows = rows.stream().sorted().collect(Collectors.toList());

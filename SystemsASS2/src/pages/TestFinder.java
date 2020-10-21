@@ -36,6 +36,7 @@ public class TestFinder extends HttpServlet {
 		try {
 			Connection conn = CreateDatabase.connect();
 			Statement stat = conn.createStatement();
+			Statement stat2 = conn.createStatement();
 			PreparedStatement pstat = null;
 			ResultSet rs = null;
 			String searchBy = request.getParameter("searchBy");
@@ -78,9 +79,9 @@ public class TestFinder extends HttpServlet {
 				else {
 					Ndate = null;
 				}
-				ResultSet rs2 = stat.executeQuery("Select LastName, FirstName, Class FROM Student_Details WHERE StudentID = '" + StudentID + "';");
+				ResultSet rs2 = stat2.executeQuery("Select LastName, FirstName, Class FROM Student_Details WHERE StudentID = '" + StudentID + "';");
 				name = rs2.getString(1) + " " + rs2.getString(2);
-				String temp = TestName + name + "?<tr> <td> " + StudentID + "</td> <td> " + name + " </td> <td> " + TestName + " </td> <td> " + Subject + " </td> <td> "  + Score + " </td> <td> " + Ndate + " </td> <td> <form action = \"TestFinder\" method = \"post\"> <input type = \"hidden\" name = \"searchBy\" value = \"" + searchBy + "\"> <input type = \"hidden\" name = \"searchvalue\" value = \"" + searchvalue + "\"> <input type = \"hidden\" name = \"StudentID\" value = \"" + StudentID + "\"> Score: <input type = \"text\" id = \"Score\" name = \"Score\" value = \""+ Score + "\"> <br>Date Completed: <input type = \"text\" id = \"date\" name = \"date\" value = \"" + Ndate + "\"> <br> <input type = \"submit\" value = \"Mark\"> </form> </td> </tr>";
+				String temp = TestName + name + "?<tr> <td> " + StudentID + "</td> <td> " + name + " </td> <td> " + TestName + " </td> <td> " + Subject + " </td> <td> "  + Score + " </td> <td> " + Ndate + " </td> <td> <form action = \"TestFinder\" method = \"post\"> <input type = \"hidden\" name = \"searchBy\" value = \"" + searchBy + "\"> <input type = \"hidden\" name = \"searchvalue\" value = \"" + searchvalue + "\"> <input type = \"hidden\" name = \"TestName\" value = \"" + TestName + "\"> <input type = \"hidden\" name = \"StudentID\" value = \"" + StudentID + "\"> Score: <input type = \"text\" id = \"Score\" name = \"Score\" value = \""+ Score + "\"> <br>Date Completed: <input type = \"text\" id = \"date\" name = \"date\" value = \"" + Ndate + "\"> <br> <input type = \"submit\" value = \"Mark\"> </form> </td> </tr>";
 				//response.getWriter().print(temp);
 				rows.add(temp);
 			}
@@ -108,10 +109,12 @@ public class TestFinder extends HttpServlet {
 			Long date = (new SimpleDateFormat("ddMMyyyy").parse(request.getParameter("date").replaceAll("/", "")).getTime()) / 1000;
 			int Score = Integer.parseInt(request.getParameter("Score"));
 			int StudentID =  Integer.parseInt(request.getParameter("StudentID"));
-			PreparedStatement pstat = conn.prepareStatement("UPDATE Test_Record SET Score = ?, CompletedOn = ? WHERE StudentID = ?");
+			String TestName = request.getParameter("TestName");
+			PreparedStatement pstat = conn.prepareStatement("UPDATE Test_Record SET Score = ?, CompletedOn = ? WHERE StudentID = ? AND TestID = ?");
 			pstat.setInt(1, Score);
 			pstat.setLong(2, date);
 			pstat.setInt(3, StudentID);
+			pstat.setString(4, TestName);
 			pstat.execute();
 		}
 		catch(Exception e) {

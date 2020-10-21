@@ -52,7 +52,9 @@ public class AddTestNames extends HttpServlet {
 				pstat.setString(3, subject);
 				pstat.execute();
 			}
-			response.getWriter().print("<form action = \"TestAdder.jsp\"> <input type = \"submit\" value = \"Back\"> </form> <form action = \"TestMarkerPasser\"> <input type = \"hidden\" name = \"TestName\" value = \"" + name + "\"> <input type = \"submit\" value = \"Mark test\"> </form>");
+			String back = ("<form action = \"TestAdder.jsp\"> <input type = \"submit\" value = \"Back\"> </form> <form action = \"TestMarkerPasser\"> <input type = \"hidden\" name = \"TestName\" value = \"" + name + "\"> <input type = \"submit\" value = \"Mark test\"> </form>");
+			request.setAttribute("back", back);
+			request.getRequestDispatcher("TestMarkerpass.jsp").forward(request, response);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

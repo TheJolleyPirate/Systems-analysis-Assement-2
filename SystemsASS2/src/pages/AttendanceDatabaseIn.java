@@ -73,7 +73,7 @@ public class AttendanceDatabaseIn extends HttpServlet {
 					}
 				pstat.execute();
 			}
-			request.getRequestDispatcher("PreAttendance.jsp").forward(request, response);
+			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

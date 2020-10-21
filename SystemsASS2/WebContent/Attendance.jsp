@@ -10,7 +10,7 @@
 <body>
 <form action = "AttendanceDatabaseIn">
 Date (dd/mm/yyyy):
-	<input type = "text" id = "Adate" name = "Adate" value = "19/09/1999"> <br>
+	<input type = "text" id = "Adate" name = "Adate"> <br>
 	<c:forEach items="${names}" var="name">
 		<c:out value= "${name}"></c:out>
 		<input type = "checkbox" id = "${name}" name = "${name}"> <br>

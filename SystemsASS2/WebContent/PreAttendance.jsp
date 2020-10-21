@@ -9,7 +9,7 @@
 <body>
 <form action = "AttendanceDatabase">
 Class: 
-	<input type = "text" id = "class" name = "class" value = "default"> <br>
+	<input type = "text" id = "class" name = "class"> <br>
 	<input type = "submit" value = "next">
 </form>
 </body>

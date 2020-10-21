@@ -49,26 +49,20 @@ public class LeaderboardDatabase extends HttpServlet {
 				completed = 0;
 				ResultSet rs2 = stat2.executeQuery("SELECT Score, CompletedOn FROM Test_Record WHERE StudentID = " + StudentID + ";");
 				while(rs2.next()) {
-					//response.getWriter().print("2nd inloop<br>");
 					total += rs2.getInt(1);
 					rs2.getLong(2);
 					if(rs2.wasNull() == false) {
 						completed += 1;
 					}
+				}
 				if (completed > 0) {
 					av = total / completed;
 				}
 				else {
 					av = 0;
 				}
-					table.add(av + completed + "?<tr> <td> " + StudentID + "</td> <td> " + name + " </td> <td> " + av + " </td> <td> " + completed + " </td> </tr>");
-					//response.getWriter().print(table.size() + "<br>");
-					//response.getWriter().print("added<br>");
-				}
+				table.add(av + completed + "?<tr> <td> " + StudentID + "</td> <td> " + name + " </td> <td> " + av + " </td> <td> " + completed + " </td> </tr>");
 			}
-			//response.getWriter().print("postloop <br>");
-			//response.getWriter().print(table.size() + "<br>");
-			//response.getWriter().print(table.size() + "<br>");
 			Collections.sort(table, new AlphanumComparator());
 			List<String> Rows = new ArrayList<String>();
 			for (int i = 0; i < table.size(); i++) {

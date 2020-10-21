@@ -10,7 +10,7 @@
 <body>
 <form action="CheckAttendanceDatabase">
 Date:
-	<input type = "text" name = "date" value = "19/09/1999">
+	<input type = "text" name = "date">
 	<input type = "submit" value = "submit">
 </form>
 
@@ -20,7 +20,6 @@ Date:
     <th>Student ID</th>
     <th>Name</th>
     <th>Attendance</th>
-    <th>Class</th>
 </tr>
 
 <c:forEach items="${Rows}" var="row">
