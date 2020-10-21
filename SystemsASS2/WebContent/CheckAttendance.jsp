@@ -13,7 +13,9 @@ Date:
 	<input type = "text" name = "date">
 	<input type = "submit" value = "submit">
 </form>
-
+<form action = "index.jsp" >
+	<input type = "submit" value = "Back">
+</form>
 <table style="width:100%">
 
 <tr>
