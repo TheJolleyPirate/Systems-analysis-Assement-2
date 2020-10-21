@@ -10,22 +10,23 @@
 <body>
 <form action="CheckAttendanceDatabase">
 Date:
-	<input type = "text" name = "date">
+	<input type = "text" name = "date" value = "19/09/1999">
 	<input type = "submit" value = "submit">
 </form>
+
 <table style="width:100%">
+
 <tr>
     <th>Student ID</th>
     <th>Name</th>
     <th>Attendance</th>
+    <th>Class</th>
 </tr>
-<c:forEach items="${rows}" var="row">
-		<tr>
-			<th>"${row.StudentID}"</th>
-    		<th>"${row.name}"</th>
-   			<th>"${row.Attendance}"</th>
-		</tr>
+
+<c:forEach items="${Rows}" var="row">
+		${row}
 	</c:forEach>
+	
 </table>
 </body>
 </html>

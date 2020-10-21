@@ -1,5 +1,7 @@
 package pages;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
@@ -27,22 +29,33 @@ public class AddStudentToDatabase extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			Statement stat = CreateDatabase.connect();
+			Connection conn = CreateDatabase.connect();
+			Statement stat = conn.createStatement();
+			PreparedStatement pstat;
 			ResultSet rs;
 			String firstname = request.getParameter("fname");
 			String lastname = request.getParameter("lname");
 			String classs = request.getParameter("class");
 			long DOB = 0;
+			pstat = conn.prepareStatement("INSERT INTO Student_Details (FirstName, LastName, DOB, Class) VALUES ( ?, ?, ?, ?);");
+			pstat.setString(1, firstname);
+			pstat.setString(2, lastname);
+			pstat.setString(4, classs);
 			if (request.getParameter("DOB").equals("null")) {
-				stat.execute("INSERT INTO Student_Details (FirstName, LastName, Class) VALUES ('" + firstname + "', '" + lastname + "', '" + classs + "');");
+				pstat.setNull(3, java.sql.Types.INTEGER);
 			}
 			else {
 				DOB = (new SimpleDateFormat("ddMMyyyy").parse(request.getParameter("DOB").replaceAll("/", "")).getTime()) / 1000;
-				stat.execute("INSERT INTO Student_Details (FirstName, LastName, DOB , Class) VALUES ('" + firstname + "', '" + lastname + "', " + DOB + ", '" + classs + "');");
+				pstat.setLong(3, DOB);
 			}
+			pstat.execute();
 			rs = stat.executeQuery("SELECT last_insert_rowid();");
-			int studentID = rs.getInt(1);
-			response.getWriter().print("Student ID: " + studentID + "<br> <form action = \"AddStudent.jsp\"> <input type = \"submit\" value = \"Back\"> </form>");
+			int StudentID = rs.getInt(1);
+			rs = stat.executeQuery("SELECT DISTINCT TestID FROM Test_Record;");
+			while(rs.next()) {
+				stat.execute("INSERT INTO Test_Record (StudentID, TestID) VALUES (" + StudentID + ", '" + rs.getString(1) + "');");
+			}
+			response.getWriter().print("Student ID: " + StudentID + "<br> <form action = \"AddStudent.jsp\"> <input type = \"submit\" value = \"Back\"> </form>");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -20,8 +20,11 @@
 <form action="CheckAttendance.jsp">
 	<input type = "submit" value = "Check Attendace">
 </form>
-<form action = "AddTestNames">
-	<input type = "submit" value = "record test results">
+<form action = "TestSelect.jsp">
+	<input type = "submit" value = "Tests">
+</form>
+<form action = "LeaderboardDatabase">
+	<input type = "submit" value = "LeaderBoard">
 </form>
 </body>
 </html>

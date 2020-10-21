@@ -1,12 +1,12 @@
 package pages;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,35 +33,50 @@ public class AttendanceDatabaseIn extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try {
-			Statement stat = CreateDatabase.connect();
-			ResultSet rs = null;
-			@SuppressWarnings("unchecked")
-			ArrayList<String> names = new ArrayList<String>((Collection<? extends String>) request.getParameterNames());
+			Connection conn = CreateDatabase.connect();
+			ResultSet rs;
+			List<String> names = new ArrayList<String>();
+			String Class = request.getParameter("class2");
 			ArrayList<String> fnames = new ArrayList<String>();
 			ArrayList<String> lnames = new ArrayList<String>();
-			for(int i = 0; i < names.size(); i ++) {
-				String[] temp = names.get(i).split("\\.");
-				lnames.add(temp[0]);
-				fnames.add(temp[1]);
-				response.getWriter().print(temp[1] + " " + temp[2]);
+			
+			PreparedStatement pstat = conn.prepareStatement("SELECT FirstName, LastName FROM Student_Details WHERE Class = ?");
+			pstat.setString(1, Class);
+			rs = pstat.executeQuery();
+			while(rs.next()) {
+				String tempf = rs.getString("FirstName");
+				String templ = rs.getString("LastName");
+				lnames.add(templ);
+				fnames.add(tempf);
+				names.add(templ + " " + tempf);
 			}
-			Long date = (new SimpleDateFormat("ddMMyyyy").parse(request.getParameter("adate").replaceAll("/", "")).getTime()) / 1000;
+			
+			Long date = (new SimpleDateFormat("ddMMyyyy").parse(request.getParameter("Adate").replaceAll("/", "")).getTime()) / 1000;
+			response.getWriter().print(names.get(0) + " " + date + " " + Class);
 			for (int i = 0; i < names.size(); i ++) {
-				rs = stat.executeQuery("SELECT StudentID FROM Student_Details WHERE FirstName = '" + fnames.get(i) + "' AND LastName = '" + lnames.get(i) + "' AND Class = '" + request.getParameter("class2") + "';");
+				pstat = conn.prepareStatement("SELECT StudentID FROM Student_Details WHERE FirstName = ? AND LastName = ? AND Class = ?");
+				pstat.setString(1, fnames.get(i));
+				pstat.setString(2, lnames.get(i));
+				pstat.setString(3, Class);
+				rs = pstat.executeQuery();
 				int StudentID = rs.getInt(1);
+				pstat = conn.prepareStatement("INSERT OR REPLACE INTO Attendance_Record (StudentID, Date, Attendance) VALUES (?, ?, ?);");
+				pstat.setInt(1, StudentID);
+				pstat.setLong(2, date);
 				try {
 					if(request.getParameter(names.get(i)).equals("on")) {
-						stat.execute("INSERT INTO Attendance_Record (StudentID, Date, Attendance) VALUES (" + StudentID + ", " + date + ", " + 1 + ");");
+						pstat.setInt(3, 1);
 					}
 				}
 				catch(Exception e) {
-					stat.execute("INSERT INTO Attendance_Record (StudentID, Date, Attendance) VALUES (" + StudentID + ", " + date + ", " + 0 + ");");
-				}
+					pstat.setInt(3, 0);				
+					}
+				pstat.execute();
 			}
 			request.getRequestDispatcher("PreAttendance.jsp").forward(request, response);
 		}
 		catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 	}
 
